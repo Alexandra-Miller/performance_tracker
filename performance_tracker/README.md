@@ -23,3 +23,4 @@ Process vehicles (get relative_position, datetime, trip_id and direction), produ
 Use schedule to prepare list of unique stops (use with caution, schedule doesn't always include all stops):
     script: prepare_stop_list.sh
     freq: Once only required (unless new stops are added in future)
+    

@@ -11,20 +11,20 @@ class NextBusData:
 
 def get_vehicles(data, last_report_time):
     try:
-        df = pd.DataFrame(data["vehicle"])
+        vehicles_df = pd.DataFrame(data["vehicle"])
     except:
         if type(data["vehicle"]) is dict:
-            df = pd.DataFrame(data["vehicle"], index=[0])
+            vehicles_df = pd.DataFrame(data["vehicle"], index=[0])
 
-    df = matchColumnNames(df)
-    min_secs_since_report = min(list(map(int, list(df["seconds_since_report"]))))
-    df["report_time"] = df.apply(
+    vehicles_df = matchColumnNames(vehicles_df)
+    min_secs_since_report = min(list(map(int, list(vehicles_df["seconds_since_report"]))))
+    vehicles_df["report_time"] = vehicles_df.apply(
         lambda row: get_report_time(
             last_report_time, min_secs_since_report, int(row.seconds_since_report)
         ),
         axis=1,
     )
-    return df[
+    return vehicles_df[
         [
             "vehicle_id",
             "direction",
@@ -56,8 +56,8 @@ def get_report_time(last_report_time, offset, secs_since_report):
     ).to_rfc3339_string()
 
 
-def matchColumnNames(df):
-    return df.rename(
+def matchColumnNames(vehicles_df):
+    return vehicles_df.rename(
         columns={
             "id": "vehicle_id",
             "heading": "direction",
